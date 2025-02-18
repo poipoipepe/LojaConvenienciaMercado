@@ -11,7 +11,7 @@ public class Adm extends javax.swing.JFrame {
             this.estoqueAdmin = estoqueAdmin;
         } else {
             try {
-                this.estoqueAdmin = new EstoqueAdmin("../LojaConvenienciaMercado/src/Estoque.txt");
+                this.estoqueAdmin = new EstoqueAdmin("src/Estoque.txt");
             } catch (Exception e) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Erro ao carregar o estoque!");
                 e.printStackTrace();

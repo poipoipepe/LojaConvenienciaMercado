@@ -183,6 +183,7 @@ public class AdicionarNoCarrinho extends javax.swing.JFrame {
 
     private void voltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarActionPerformed
         new EscolherSecao(null, estoqueCliente).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_voltarActionPerformed
 
     private void carregarProdutos() {
