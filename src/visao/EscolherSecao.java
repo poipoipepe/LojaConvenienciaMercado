@@ -4,16 +4,33 @@
  */
 package visao;
 
+import estoque.EstoqueAdmin;
+import estoque.EstoqueCliente;
+
 /**
  *
  * @author melis
  */
 public class EscolherSecao extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EscolherSecao
-     */
-    public EscolherSecao() {
+    private EstoqueAdmin estoqueAdmin;
+    private EstoqueCliente estoqueCliente;
+    private String secao;
+
+    public EscolherSecao(EstoqueAdmin estoqueAdmin, EstoqueCliente estoqueCliente) {
+        this.estoqueAdmin = estoqueAdmin;
+        if (estoqueAdmin == null) {
+            if (estoqueCliente == null) {
+                try {
+                    this.estoqueCliente = new EstoqueCliente("src/Estoque.txt");
+                } catch (Exception e) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Erro ao carregar o estoque!");
+                    System.exit(1);
+                }
+            } else {
+                this.estoqueCliente = estoqueCliente;
+            }
+        }
         initComponents();
     }
 
@@ -42,6 +59,11 @@ public class EscolherSecao extends javax.swing.JFrame {
 
         limpeza.setForeground(new java.awt.Color(204, 160, 78));
         limpeza.setText("Itens de limpeza");
+        limpeza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpezaActionPerformed(evt);
+            }
+        });
 
         higiene.setForeground(new java.awt.Color(204, 160, 78));
         higiene.setText("Higiene pessoal");
@@ -74,7 +96,7 @@ public class EscolherSecao extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sairSair(evt);
+                System.exit(0);
             }
         });
 
@@ -142,58 +164,56 @@ public class EscolherSecao extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void alimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alimentoActionPerformed
-        // TODO add your handling code here:
+        if (alimento.isSelected()) {
+            limpeza.setSelected(false);
+            higiene.setSelected(false);
+            secao = "alimentos";
+        } else {
+            secao = "";
+        }
     }//GEN-LAST:event_alimentoActionPerformed
 
     private void higieneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_higieneActionPerformed
-        // TODO add your handling code here:
+        if (higiene.isSelected()) {
+            limpeza.setSelected(false);
+            alimento.setSelected(false);
+            secao = "higiene pessoal";
+        } else {
+            secao = "";
+        }
     }//GEN-LAST:event_higieneActionPerformed
 
+    private void limpezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpezaActionPerformed
+        if (limpeza.isSelected()) {
+            alimento.setSelected(false);
+            higiene.setSelected(false);
+            secao = "itens de limpeza";
+        } else {
+            secao = "";
+        }
+    }//GEN-LAST:event_limpezaActionPerformed
+
     private void seguirSeguir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seguirSeguir
-        // TODO add your handling code here:
+        if (secao.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione uma seção!");
+        } else {
+            if(estoqueAdmin != null) {
+                new Escolher(estoqueAdmin, secao).setVisible(true);
+            } else {
+                new AdicionarNoCarrinho(estoqueCliente, secao).setVisible(true);
+            }
+            this.dispose();
+        }
     }//GEN-LAST:event_seguirSeguir
 
     private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
-        // TODO add your handling code here:
+        if(estoqueAdmin != null) {
+            new Adm(estoqueAdmin).setVisible(true);
+        } else {
+            new BemVindo().setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_voltarVoltar
-
-    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sairSair
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EscolherSecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EscolherSecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EscolherSecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EscolherSecao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);}
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EscolherSecao().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton alimento;

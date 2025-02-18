@@ -4,17 +4,25 @@
  */
 package visao;
 
-/**
- *
- * @author melis
- */
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+
+import estoque.EstoqueAdmin;
+import estoque.Produto;
+
+
 public class Conferir extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Conferir
-     */
-    public Conferir() {
+    private EstoqueAdmin estoqueAdmin;
+    private String secao;
+    private DefaultListModel<String> listModel;
+
+    public Conferir(EstoqueAdmin estoqueAdmin, String secao) {
+        this.estoqueAdmin = estoqueAdmin;
+        this.secao = secao;
         initComponents();
+        carregarProdutos();
     }
 
     /**
@@ -67,7 +75,7 @@ public class Conferir extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sairSair(evt);
+                System.exit(0);
             }
         });
 
@@ -118,48 +126,19 @@ public class Conferir extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
-        // TODO add your handling code here:
-    }//GEN-LAST:event_voltarVoltar
-
-    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sairSair
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Conferir.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Conferir.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Conferir.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Conferir.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void carregarProdutos() {
+        List<Produto> produtos = estoqueAdmin.getProdutos(secao);
+        listModel = new DefaultListModel<>();
+        for (Produto p : produtos) {
+            listModel.addElement(p.getCodigo() + " - " + p.getNome() + " | Quant: " + p.getQuantidade() + " | Preço: R$ " + p.getPreco());
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Conferir().setVisible(true);
-            }
-        });
+        Lista.setModel(listModel);
     }
+    
+    private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
+        new Escolher(estoqueAdmin, secao).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_voltarVoltar
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> Lista;

@@ -1,19 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package visao;
 
-/**
- *
- * @author melis
- */
-public class Adm extends javax.swing.JFrame {
+import estoque.EstoqueAdmin;
 
-    /**
-     * Creates new form Adm
-     */
-    public Adm() {
+public class Adm extends javax.swing.JFrame {
+    
+    EstoqueAdmin estoqueAdmin;
+    
+    public Adm(EstoqueAdmin estoqueAdmin) {
+        if (estoqueAdmin != null) {
+            this.estoqueAdmin = estoqueAdmin;
+        } else {
+            try {
+                this.estoqueAdmin = new EstoqueAdmin("../LojaConvenienciaMercado/src/Estoque.txt");
+            } catch (Exception e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Erro ao carregar o estoque!");
+                e.printStackTrace();
+                System.exit(1);
+            }
+        }
         initComponents();
     }
 
@@ -57,7 +61,7 @@ public class Adm extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Sair(evt);
+                System.exit(0);
             }
         });
 
@@ -70,14 +74,8 @@ public class Adm extends javax.swing.JFrame {
             }
         });
 
-        codigoAdm.setBackground(new java.awt.Color(255, 255, 255));
         codigoAdm.setForeground(new java.awt.Color(204, 160, 78));
-        codigoAdm.setText("jPasswordField1");
-        codigoAdm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codigoAdmActionPerformed(evt);
-            }
-        });
+
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,9 +85,9 @@ public class Adm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(44, 44, 44)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(codigoAdm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(codigoAdm)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(voltar)
@@ -128,56 +126,21 @@ public class Adm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Sair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sair
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Sair
-
     private void Seguir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Seguir
-        // TODO add your handling code here:
+        String codigo = new String(codigoAdm.getPassword());
+        if(codigo.equals(estoqueAdmin.getCodAdm())) { // código admin correto
+            new EscolherSecao(estoqueAdmin, null).setVisible(true); // abre tela de EscolherSecao
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Código incorreto, tente novamente!");
+            codigoAdm.setText(""); // limpa o campo para nova tentativa
+        }
     }//GEN-LAST:event_Seguir
 
     private void Voltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Voltar
-        // TODO add your handling code here:
+        new BemVindo().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_Voltar
-
-    private void codigoAdmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoAdmActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codigoAdmActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Adm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Adm().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField codigoAdm;

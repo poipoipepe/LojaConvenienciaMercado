@@ -1,18 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package visao;
 
-/**
- *
- * @author melis
- */
 public class BemVindo extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BemVindo
-     */
     public BemVindo() {
         initComponents();
     }
@@ -56,6 +45,11 @@ public class BemVindo extends javax.swing.JFrame {
         sair.setBackground(new java.awt.Color(255, 149, 57));
         sair.setForeground(new java.awt.Color(255, 255, 255));
         sair.setText("Sair");
+        sair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                System.exit(0);
+            }
+        });
 
         adm.setForeground(new java.awt.Color(204, 160, 78));
         adm.setText("Adiministrador");
@@ -67,6 +61,11 @@ public class BemVindo extends javax.swing.JFrame {
 
         cliente.setForeground(new java.awt.Color(204, 160, 78));
         cliente.setText("Cliente");
+        cliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clienteActionPerformed(evt);
+            }
+        });
 
         jLabel2.setForeground(new java.awt.Color(204, 160, 78));
         jLabel2.setText("Escolha uma opção:");
@@ -144,47 +143,28 @@ public class BemVindo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SeguirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SeguirActionPerformed
-        // TODO add your handling code here:
+        if (adm.isSelected()) {
+            new Adm(null).setVisible(true);
+            this.dispose();
+        } else if (cliente.isSelected()) {
+            new EscolherSecao(null, null).setVisible(true);
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Por favor, selecione uma opção.");
+        }
     }//GEN-LAST:event_SeguirActionPerformed
 
     private void admActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_admActionPerformed
-        // TODO add your handling code here:
+        if (cliente.isSelected()) {
+            cliente.setSelected(false);
+        }
     }//GEN-LAST:event_admActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BemVindo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BemVindo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BemVindo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BemVindo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clienteActionPerformed
+        if (adm.isSelected()) {
+            adm.setSelected(false);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BemVindo().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_clienteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Seguir;

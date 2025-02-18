@@ -4,16 +4,20 @@
  */
 package visao;
 
+import estoque.EstoqueAdmin;
+
 /**
  *
  * @author melis
  */
 public class Escolher extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Escolher
-     */
-    public Escolher() {
+    EstoqueAdmin estoqueAdmin;
+    String secao;
+
+    public Escolher(EstoqueAdmin estoqueAdmin, String secao) {
+        this.estoqueAdmin = estoqueAdmin;
+        this.secao = secao;
         initComponents();
     }
 
@@ -30,7 +34,7 @@ public class Escolher extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         conferir = new javax.swing.JRadioButton();
         adicionar = new javax.swing.JRadioButton();
-        mudarPre = new javax.swing.JRadioButton();
+        mudarPreco = new javax.swing.JRadioButton();
         seguir = new javax.swing.JButton();
         voltar = new javax.swing.JButton();
         sair = new javax.swing.JButton();
@@ -59,11 +63,11 @@ public class Escolher extends javax.swing.JFrame {
             }
         });
 
-        mudarPre.setForeground(new java.awt.Color(204, 160, 78));
-        mudarPre.setText("Mudar preço do produto");
-        mudarPre.addActionListener(new java.awt.event.ActionListener() {
+        mudarPreco.setForeground(new java.awt.Color(204, 160, 78));
+        mudarPreco.setText("Mudar preço do produto");
+        mudarPreco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mudarPreActionPerformed(evt);
+                mudarPrecoActionPerformed(evt);
             }
         });
 
@@ -90,7 +94,7 @@ public class Escolher extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sairSair(evt);
+                System.exit(0);
             }
         });
 
@@ -109,7 +113,7 @@ public class Escolher extends javax.swing.JFrame {
                                 .addComponent(sair)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(seguir))
-                            .addComponent(mudarPre)
+                            .addComponent(mudarPreco)
                             .addComponent(adicionar)
                             .addComponent(conferir)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -127,7 +131,7 @@ public class Escolher extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(adicionar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mudarPre)
+                .addComponent(mudarPreco)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(seguir)
@@ -152,69 +156,49 @@ public class Escolher extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sairSair
-
     private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
-        // TODO add your handling code here:
+        new EscolherSecao(estoqueAdmin, null).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_voltarVoltar
 
     private void seguirSeguir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seguirSeguir
-        // TODO add your handling code here:
+        if (adicionar.isSelected()) {
+            new AdicionarProduto(estoqueAdmin, secao).setVisible(true);
+        } else if (conferir.isSelected()) {
+            new Conferir(estoqueAdmin, secao).setVisible(true);
+        } else if (mudarPreco.isSelected()) {
+            new MudarPreco(estoqueAdmin, secao).setVisible(true);
+        }
+        this.dispose();
     }//GEN-LAST:event_seguirSeguir
 
-    private void mudarPreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mudarPreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mudarPreActionPerformed
+    private void mudarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mudarPrecoActionPerformed
+        if (mudarPreco.isSelected()) {
+            conferir.setSelected(false);
+            adicionar.setSelected(false);
+        }
+    }//GEN-LAST:event_mudarPrecoActionPerformed
 
     private void adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarActionPerformed
-        // TODO add your handling code here:
+        if (adicionar.isSelected()) {
+            conferir.setSelected(false);
+            mudarPreco.setSelected(false);
+        }
     }//GEN-LAST:event_adicionarActionPerformed
 
     private void conferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conferirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_conferirActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Escolher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Escolher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Escolher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Escolher.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        if (conferir.isSelected()) {
+            adicionar.setSelected(false);
+            mudarPreco.setSelected(false);
         }
-        //</editor-folseguir    /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Escolher().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_conferirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton adicionar;
     private javax.swing.JRadioButton conferir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton mudarPre;
+    private javax.swing.JRadioButton mudarPreco;
     private javax.swing.JButton sair;
     private javax.swing.JButton seguir;
     private javax.swing.JButton voltar;

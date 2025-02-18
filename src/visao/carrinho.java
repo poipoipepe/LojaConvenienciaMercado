@@ -4,17 +4,33 @@
  */
 package visao;
 
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
+import estoque.EstoqueCliente;
+import estoque.Produto;
+
 /**
  *
  * @author melis
  */
-public class carrinho extends javax.swing.JFrame {
+public class Carrinho extends javax.swing.JFrame {
 
-    /**
-     * Creates new form carrinho
-     */
-    public carrinho() {
+    private EstoqueCliente estoqueCliente;
+    private String secao;
+    private DefaultListModel<String> listModel;
+    private double total;
+
+    private java.util.Map<String, Integer> quantProduto;
+
+    public Carrinho(EstoqueCliente estoqueCliente, String secao) {
+        this.estoqueCliente = estoqueCliente;
+        this.secao = secao;
+        this.quantProduto = new java.util.HashMap<>();
         initComponents();
+        atualizarCarrinho();
     }
 
     /**
@@ -77,7 +93,7 @@ public class carrinho extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sairSair(evt);
+                System.exit(0);
             }
         });
 
@@ -149,52 +165,60 @@ public class carrinho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sairSair
+    public void adicionarItem(String codigo, int quantidade) {
+        int atual = quantProduto.getOrDefault(codigo, 0);
+        quantProduto.put(codigo, atual + quantidade);
+        atualizarCarrinho();
+    }
 
-    private void pagarSeguir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarSeguir
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pagarSeguir
-
-    private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
-        // TODO add your handling code here:
-    }//GEN-LAST:event_voltarVoltar
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    private void atualizarCarrinho() {
+        listModel = new DefaultListModel<>();
+        total = 0.0;
+        List<Produto> produtos = estoqueCliente.getProdutos(secao);
+        for (String codigo : quantProduto.keySet()) {
+            for (Produto p : produtos) {
+                if (p.getCodigo().equals(codigo)) {
+                    int qtd = quantProduto.get(codigo);
+                    double subtotal = qtd * p.getPreco();
+                    total += subtotal;
+                    listModel.addElement(p.getCodigo() + " - " + p.getNome() + " x " + qtd + " = " + subtotal);
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(carrinho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(carrinho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(carrinho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(carrinho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new carrinho().setVisible(true);
-            }
-        });
+        jList1.setModel(listModel);
+        precoTotal.setText("Total: " + total);
     }
+
+    private void pagarSeguir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarSeguir
+         boolean sucesso = true;
+        for (String codigo : quantProduto.keySet()) {
+            int qtd = quantProduto.get(codigo);
+            boolean comprou = estoqueCliente.comprarProduto(secao, codigo, qtd);
+            if (!comprou) {
+                sucesso = false;
+                JOptionPane.showMessageDialog(this, "Erro na compra do produto: " + codigo);
+                break;
+            }
+        }
+        if (sucesso) {
+            try {
+                estoqueCliente.save();
+                JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
+                quantProduto.clear();
+                atualizarCarrinho();
+                new BemVindo().setVisible(true);
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar o estoque!");
+            }
+        }
+    }//GEN-LAST:event_pagarSeguir
+
+    private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
+        new AdicionarNoCarrinho(estoqueCliente, secao).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_voltarVoltar
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

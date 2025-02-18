@@ -1,19 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package visao;
 
-/**
- *
- * @author melis
- */
-public class mudarPreco extends javax.swing.JFrame {
+import java.io.IOException;
 
-    /**
-     * Creates new form mudarPreco
-     */
-    public mudarPreco() {
+import javax.swing.JOptionPane;
+
+import estoque.EstoqueAdmin;
+
+
+public class MudarPreco extends javax.swing.JFrame {
+
+    private EstoqueAdmin estoqueAdmin;
+    private String secao;
+    
+    public MudarPreco(EstoqueAdmin estoqueAdmin, String secao) {
+        this.estoqueAdmin = estoqueAdmin;
+        this.secao = secao;
         initComponents();
     }
 
@@ -26,18 +27,19 @@ public class mudarPreco extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        codigoProdAlter = new javax.swing.JTextField();
+        codigoProduto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        precoAlterado = new javax.swing.JTextField();
+        novoPreco = new javax.swing.JTextField();
         voltar = new javax.swing.JButton();
         sair = new javax.swing.JButton();
+        salvar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alterar Preço");
+        setBackground(new java.awt.Color(255, 235, 211));
 
-        codigoProdAlter.setForeground(new java.awt.Color(204, 160, 78));
-        codigoProdAlter.setText("jTextField1");
+        codigoProduto.setForeground(new java.awt.Color(204, 160, 78));
 
         jLabel1.setForeground(new java.awt.Color(204, 160, 78));
         jLabel1.setText("Informe o código do produto que deseja alterar o preço:");
@@ -45,8 +47,7 @@ public class mudarPreco extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(204, 160, 78));
         jLabel2.setText("Informe o novo preço:");
 
-        precoAlterado.setForeground(new java.awt.Color(204, 160, 78));
-        precoAlterado.setText("jTextField2");
+        novoPreco.setForeground(new java.awt.Color(204, 160, 78));
 
         voltar.setBackground(new java.awt.Color(255, 149, 57));
         voltar.setForeground(new java.awt.Color(255, 255, 255));
@@ -62,7 +63,16 @@ public class mudarPreco extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sairSair(evt);
+                System.exit(0);
+            }
+        });
+
+        salvar.setBackground(new java.awt.Color(255, 149, 57));
+        salvar.setForeground(new java.awt.Color(255, 255, 255));
+        salvar.setText("Salvar");
+        salvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvar(evt);
             }
         });
 
@@ -72,18 +82,20 @@ public class mudarPreco extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(precoAlterado, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(novoPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)
                         .addComponent(jLabel1)
-                        .addComponent(codigoProdAlter, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(codigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(voltar)
-                        .addGap(27, 27, 27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(sair)
-                        .addGap(131, 131, 131)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                        .addGap(28, 28, 28)
+                        .addComponent(salvar)
+                        .addGap(22, 22, 22)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,70 +103,61 @@ public class mudarPreco extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(codigoProdAlter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(codigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(precoAlterado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(novoPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(voltar)
-                    .addComponent(sair))
-                .addGap(85, 85, 85))
+                    .addComponent(sair)
+                    .addComponent(salvar))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
-        // TODO add your handling code here:
+        new Escolher(estoqueAdmin, secao).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_voltarVoltar
 
-    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sairSair
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void salvar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvar
+        String codigo = codigoProduto.getText().trim();
+        double auxNovoPreco;
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+            auxNovoPreco = Double.parseDouble(novoPreco.getText().trim());
+            if (auxNovoPreco < 0) {
+                JOptionPane.showMessageDialog(this, "Preço inválido!");
+                return;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mudarPreco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mudarPreco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mudarPreco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mudarPreco.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Preço inválido!");
+            return;
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new mudarPreco().setVisible(true);
+        boolean atualizado = estoqueAdmin.updatePrecoProdutoAdmin(secao, codigo, auxNovoPreco);
+        if (atualizado) {
+            try {
+                estoqueAdmin.save();
+                JOptionPane.showMessageDialog(this, "Preço atualizado com sucesso!");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar o estoque!");
             }
-        });
-    }
+        } else {
+            JOptionPane.showMessageDialog(this, "Produto não encontrado!");
+        }
+    }//GEN-LAST:event_salvar
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField codigoProdAlter;
+    private javax.swing.JTextField codigoProduto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField precoAlterado;
+    private javax.swing.JTextField novoPreco;
     private javax.swing.JButton sair;
+    private javax.swing.JButton salvar;
     private javax.swing.JButton voltar;
     // End of variables declaration//GEN-END:variables
 }
