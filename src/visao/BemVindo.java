@@ -47,7 +47,7 @@ public class BemVindo extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                sairActionPerformed(evt);
             }
         });
 
@@ -165,6 +165,10 @@ public class BemVindo extends javax.swing.JFrame {
             adm.setSelected(false);
         }
     }//GEN-LAST:event_clienteActionPerformed
+
+    private void sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_sairActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Seguir;

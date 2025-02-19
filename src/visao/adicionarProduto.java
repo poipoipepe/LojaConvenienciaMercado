@@ -68,7 +68,7 @@ public class AdicionarProduto extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                sairSair(evt);
             }
         });
 
@@ -158,6 +158,10 @@ public class AdicionarProduto extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_voltarVoltar
 
+    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
+        System.exit(0);
+    }//GEN-LAST:event_sairSair
+
     private void adicionar(java.awt.event.ActionEvent evt) {                           
         String codigo = estoqueAdmin.getLastProductCode(secao);
         codigo = String.format("%03d", Integer.parseInt(codigo.substring(0, 3)) + 1);
@@ -173,17 +177,17 @@ public class AdicionarProduto extends javax.swing.JFrame {
         }
         
         Produto novoProduto = new Produto(codigo, nome, quantidade, preco);
-        boolean sucesso = estoqueAdmin.addProdutoAdmin(secao, novoProduto);
-        if (sucesso) {
-            try {
-                estoqueAdmin.save();
-                JOptionPane.showMessageDialog(this, "Produto adicionado com sucesso!");
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao salvar o estoque!");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Falha ao adicionar produto.");
+        String adicionado = estoqueAdmin.addProdutoAdmin(secao, novoProduto);
+        try {
+            estoqueAdmin.save();
+            JOptionPane.showMessageDialog(this, adicionado);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar o estoque!");
         }
+
+        jTextFieldNome.setText("");
+        jSpinnerQuantidade.setValue(0);
+        jTextFieldPreco.setText("");
     }                              
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

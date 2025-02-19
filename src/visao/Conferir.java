@@ -75,7 +75,7 @@ public class Conferir extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                sairSair(evt);
             }
         });
 
@@ -134,6 +134,10 @@ public class Conferir extends javax.swing.JFrame {
         }
         Lista.setModel(listModel);
     }
+
+    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
+        System.exit(0);
+    }//GEN-LAST:event_sairSair
     
     private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
         new Escolher(estoqueAdmin, secao).setVisible(true);

@@ -1,15 +1,15 @@
 cod_adm 12345
 
 alimentos
-001 arroz 1 200,15
-002 feijao 1 30,00
+001 arroz 2 40,00
+002 feijao 4 30,00
 003 rabanete 3 23,49
 
 itens de limpeza
 101 desinfetante 2 20,21
-102 detergente 2 10,00
-103 escova 0 4,99
-104 shampoo 5 20,99
+102 detergente 1 10,00
+103 escova 6 4,99
+104 shampoo 4 20,99
 
 higiene pessoal
 201 pasta de dente 2 10,00

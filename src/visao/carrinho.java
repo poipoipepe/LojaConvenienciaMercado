@@ -5,6 +5,7 @@
 package visao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -23,12 +24,12 @@ public class Carrinho extends javax.swing.JFrame {
     private DefaultListModel<String> listModel;
     private double total;
 
-    private java.util.Map<String, Integer> quantProduto;
+    private Map<String, Integer> carrinhoItens;
 
-    public Carrinho(EstoqueCliente estoqueCliente, String secao) {
+    public Carrinho(EstoqueCliente estoqueCliente, String secao, Map<String, Integer> carrinhoItens) {
         this.estoqueCliente = estoqueCliente;
         this.secao = secao;
-        this.quantProduto = new java.util.HashMap<>();
+        this.carrinhoItens = carrinhoItens;
         initComponents();
         atualizarCarrinho();
     }
@@ -93,7 +94,7 @@ public class Carrinho extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                sairSair(evt);
             }
         });
 
@@ -143,9 +144,9 @@ public class Carrinho extends javax.swing.JFrame {
                     .addComponent(precoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(sair)
                     .addComponent(voltar)
-                    .addComponent(pagar))
+                    .addComponent(pagar)
+                    .addComponent(sair))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -165,20 +166,15 @@ public class Carrinho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void adicionarItem(String codigo, int quantidade) {
-        int atual = quantProduto.getOrDefault(codigo, 0);
-        quantProduto.put(codigo, atual + quantidade);
-        atualizarCarrinho();
-    }
-
-    private void atualizarCarrinho() {
+    public void atualizarCarrinho() {
         listModel = new DefaultListModel<>();
         total = 0.0;
         List<Produto> produtos = estoqueCliente.getProdutos(secao);
-        for (String codigo : quantProduto.keySet()) {
+        // Percorre os itens no carrinhoItens para montar a listagem e calcular o total
+        for (String codigo : carrinhoItens.keySet()) {
             for (Produto p : produtos) {
                 if (p.getCodigo().equals(codigo)) {
-                    int qtd = quantProduto.get(codigo);
+                    int qtd = carrinhoItens.get(codigo);
                     double subtotal = qtd * p.getPreco();
                     total += subtotal;
                     listModel.addElement(p.getCodigo() + " - " + p.getNome() + " x " + qtd + " = " + subtotal);
@@ -191,21 +187,22 @@ public class Carrinho extends javax.swing.JFrame {
     }
 
     private void pagarSeguir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagarSeguir
-         boolean sucesso = true;
-        for (String codigo : quantProduto.keySet()) {
-            int qtd = quantProduto.get(codigo);
-            boolean comprou = estoqueCliente.comprarProduto(secao, codigo, qtd);
-            if (!comprou) {
-                sucesso = false;
-                JOptionPane.showMessageDialog(this, "Erro na compra do produto: " + codigo);
-                break;
-            }
+        boolean sucesso = true;
+        // Para cada item do carrinho, efetua a compra (reduz a quantidade no estoque)
+        for (String codigo : carrinhoItens.keySet()) {
+           int qtd = carrinhoItens.get(codigo);
+           boolean comprou = estoqueCliente.comprarProduto(secao, codigo, qtd);
+           if (!comprou) {
+               sucesso = false;
+               JOptionPane.showMessageDialog(this, "Erro na compra do produto: " + codigo);
+               break;
+           }
         }
         if (sucesso) {
             try {
                 estoqueCliente.save();
                 JOptionPane.showMessageDialog(this, "Compra finalizada com sucesso!");
-                quantProduto.clear();
+                carrinhoItens.clear();
                 atualizarCarrinho();
                 new BemVindo().setVisible(true);
                 this.dispose();
@@ -214,6 +211,10 @@ public class Carrinho extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_pagarSeguir
+
+    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
+        System.exit(0);
+    }//GEN-LAST:event_sairSair
 
     private void voltarVoltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltarVoltar
         new AdicionarNoCarrinho(estoqueCliente, secao).setVisible(true);

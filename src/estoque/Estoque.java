@@ -70,14 +70,22 @@ public class Estoque {
     }
 
     // Métodos de alteração que só o admin deve usar - protected
-    protected boolean addProduto(String secao, Produto produto) {
+    protected String addProduto(String secao, Produto produto) {
         List<Produto> lista = secoes.get(secao);
         if (lista == null) {
             lista = new ArrayList<>();
             secoes.put(secao, lista);
         }
+
+        for (Produto p : lista) {
+            if (p.getNome().equals(produto.getNome())) {
+                p.setQuantidade(produto.getQuantidade());
+                return "Produto já existe, quantidade atualizada!";
+            }
+        }
+        
         lista.add(produto);
-        return true;
+        return "Produto adicionado com sucesso!";
     }
 
     protected boolean updatePrecoProduto(String secao, String codigo, double novoPreco) {

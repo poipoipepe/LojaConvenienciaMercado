@@ -61,7 +61,7 @@ public class Adm extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                Sair(evt);
             }
         });
 
@@ -136,6 +136,10 @@ public class Adm extends javax.swing.JFrame {
             codigoAdm.setText(""); // limpa o campo para nova tentativa
         }
     }//GEN-LAST:event_Seguir
+
+    private void Sair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sair
+        System.exit(0);
+    }//GEN-LAST:event_Sair
 
     private void Voltar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Voltar
         new BemVindo().setVisible(true);

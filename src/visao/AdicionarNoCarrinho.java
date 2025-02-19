@@ -1,6 +1,8 @@
 package visao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -11,7 +13,8 @@ public class AdicionarNoCarrinho extends javax.swing.JFrame {
 
     EstoqueCliente estoqueCliente;
     String secao;
-    private DefaultListModel<String> listModel;
+    private DefaultListModel<String> listEstoque;
+    private Map<String, Integer> carrinhoItens = new HashMap<>();
 
     public AdicionarNoCarrinho(EstoqueCliente estoqueCliente, String secao) {
         this.estoqueCliente = estoqueCliente;
@@ -75,7 +78,7 @@ public class AdicionarNoCarrinho extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                sairActionPerformed(evt);
             }
         });
 
@@ -83,6 +86,11 @@ public class AdicionarNoCarrinho extends javax.swing.JFrame {
         carrinho.setForeground(new java.awt.Color(255, 255, 255));
         carrinho.setText("Ir ao carrinho");
         carrinho.setFocusable(false);
+        carrinho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                carrinhoActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setForeground(new java.awt.Color(204, 160, 78));
 
@@ -188,11 +196,11 @@ public class AdicionarNoCarrinho extends javax.swing.JFrame {
 
     private void carregarProdutos() {
         List<Produto> produtos = estoqueCliente.getProdutos(secao);
-        listModel = new DefaultListModel<>();
+        listEstoque = new DefaultListModel<>();
         for (Produto p : produtos) {
-            listModel.addElement(p.getCodigo() + " - " + p.getNome() + " | Quant: " + p.getQuantidade() + " | Preço: R$ " + p.getPreco());
+            listEstoque.addElement(p.getCodigo() + " - " + p.getNome() + " | Quant: " + p.getQuantidade() + " | Preço: R$ " + p.getPreco());
         }
-        Lista.setModel(listModel);
+        Lista.setModel(listEstoque);
     }
 
     private void addcarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addcarrinhoActionPerformed
@@ -224,12 +232,22 @@ public class AdicionarNoCarrinho extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Produto não encontrado!");
             return;
         }
-        
-        Carrinho carrinho = new Carrinho(estoqueCliente, secao);
-        carrinho.adicionarItem(codigo, qtd);
-        carrinho.setVisible(true);
-        this.dispose();
+        int atual = carrinhoItens.getOrDefault(codigo, 0);
+        carrinhoItens.put(codigo, atual + qtd);
+        JOptionPane.showMessageDialog(this, "Item adicionado com sucesso!");
+
+        jTextFieldCodigo.setText("");
+        quantidadeCompra.setValue(0);
     }//GEN-LAST:event_addcarrinhoActionPerformed
+
+    private void sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_sairActionPerformed
+
+    private void carrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carrinhoActionPerformed
+        new Carrinho(estoqueCliente, secao, carrinhoItens).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_carrinhoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> Lista;

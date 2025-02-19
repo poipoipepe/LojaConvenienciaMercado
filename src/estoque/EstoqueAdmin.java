@@ -9,7 +9,7 @@ public class EstoqueAdmin extends Estoque {
         super(filePath);
     }
     
-    public boolean addProdutoAdmin(String secao, Produto produto) {
+    public String addProdutoAdmin(String secao, Produto produto) {
         return super.addProduto(secao, produto);
     }
     

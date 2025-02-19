@@ -94,7 +94,7 @@ public class Escolher extends javax.swing.JFrame {
         sair.setText("Sair");
         sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.exit(0);
+                sairSair(evt);
             }
         });
 
@@ -171,6 +171,10 @@ public class Escolher extends javax.swing.JFrame {
         }
         this.dispose();
     }//GEN-LAST:event_seguirSeguir
+
+    private void sairSair(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sairSair
+        System.exit(0);
+    }//GEN-LAST:event_sairSair
 
     private void mudarPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mudarPrecoActionPerformed
         if (mudarPreco.isSelected()) {
